@@ -1,53 +1,75 @@
 package main.java.com.insuranceagency;
 
+import java.util.Date;
+
 public class Main {
     public static void main(String[] args) {
-        CustomerService service = new CustomerService();
+        CustomerService customerService = new CustomerService();
+        InsurancePolicyService policyService = new InsurancePolicyService();
 
-        // Test Add (Create) with Duplicate Check
-        Customer newCustomer = new Customer(1, "John Doe", "john@example.com");
-        if (service.getCustomerById(1) == null) {
-            service.addCustomer(newCustomer);
+        // Test Add (Create) Customer with Duplicate Check
+        Customer newCustomer = new Customer(1, "John Doe", "john@example.com", "555-1234", "123 Elm St", new Date());
+        if (customerService.getCustomerById(1) == null) {
+            customerService.addCustomer(newCustomer);
             System.out.println("Customer added successfully.");
         } else {
             System.out.println("Customer with this ID already exists.");
         }
 
-        // Test Retrieve (Read)
-        Customer retrievedCustomer = service.getCustomerById(1);
+        // Test Retrieve (Read) Customer
+        Customer retrievedCustomer = customerService.getCustomerById(1);
         if (retrievedCustomer != null) {
             System.out.println("Retrieved Customer: " + retrievedCustomer.getName() + ", " + retrievedCustomer.getEmail());
         } else {
             System.out.println("Customer not found.");
         }
 
-        // Test Update
-        Customer updatedCustomer = new Customer(1, "John Doe Jr.", "john.jr@example.com");
-        boolean isUpdated = service.updateCustomer(updatedCustomer);
-        if (isUpdated) {
-            System.out.println("Customer updated successfully.");
+        // Test Add (Create) Insurance Policy for Customer
+        InsurancePolicy newPolicy = new InsurancePolicy(0, 1, "POL12345", "Auto", 5000.00, new Date(), new Date());
+        policyService.addPolicy(newPolicy);
+        System.out.println("Policy added successfully.");
+
+        // Test Retrieve (Read) Insurance Policy by ID
+        InsurancePolicy retrievedPolicy = policyService.getPolicyById(1);
+        if (retrievedPolicy != null) {
+            System.out.println("Retrieved Policy: " + retrievedPolicy.getPolicyNumber() + ", " + retrievedPolicy.getPolicyType() + ", Coverage: " + retrievedPolicy.getCoverageAmount());
         } else {
-            System.out.println("Customer update failed.");
+            System.out.println("Policy not found.");
         }
 
-        // Verify Update
-        Customer verifyUpdatedCustomer = service.getCustomerById(1);
-        if (verifyUpdatedCustomer != null) {
-            System.out.println("Updated Customer: " + verifyUpdatedCustomer.getName() + ", " + verifyUpdatedCustomer.getEmail());
+        // Test Update Insurance Policy
+        InsurancePolicy updatedPolicy = new InsurancePolicy(1, 1, "POL12345", "Home", 10000.00, new Date(), new Date());
+        boolean isPolicyUpdated = policyService.updatePolicy(updatedPolicy);
+        if (isPolicyUpdated) {
+            System.out.println("Policy updated successfully.");
+        } else {
+            System.out.println("Policy update failed.");
         }
 
-        // Test Delete
-        boolean isDeleted = service.deleteCustomer(1);
-        if (isDeleted) {
+        // Verify Update for Insurance Policy
+        InsurancePolicy verifyUpdatedPolicy = policyService.getPolicyById(1);
+        if (verifyUpdatedPolicy != null) {
+            System.out.println("Updated Policy: " + verifyUpdatedPolicy.getPolicyNumber() + ", " + verifyUpdatedPolicy.getPolicyType() + ", Coverage: " + verifyUpdatedPolicy.getCoverageAmount());
+        }
+
+        // Test Delete Insurance Policy
+        boolean isPolicyDeleted = policyService.deletePolicy(1);
+        if (isPolicyDeleted) {
+            System.out.println("Policy deleted successfully.");
+        } else {
+            System.out.println("Policy delete failed.");
+        }
+
+        // Verify Deletion of Insurance Policy
+        InsurancePolicy verifyDeletedPolicy = policyService.getPolicyById(1);
+        if (verifyDeletedPolicy == null) {
+            System.out.println("Policy deletion verified; policy not found.");
+        }
+
+        // Cleanup - Delete Customer for re-testing
+        boolean isCustomerDeleted = customerService.deleteCustomer(1);
+        if (isCustomerDeleted) {
             System.out.println("Customer deleted successfully.");
-        } else {
-            System.out.println("Customer delete failed.");
-        }
-
-        // Verify Deletion
-        Customer verifyDeletedCustomer = service.getCustomerById(1);
-        if (verifyDeletedCustomer == null) {
-            System.out.println("Customer deletion verified; customer not found.");
         }
     }
 }
