@@ -7,69 +7,81 @@ public class Main {
         CustomerService customerService = new CustomerService();
         InsurancePolicyService policyService = new InsurancePolicyService();
 
-        // Test Add (Create) Customer with Duplicate Check
+        // Step 1: Add Customer (Create) with Duplicate Check
         Customer newCustomer = new Customer(1, "John Doe", "john@example.com", "555-1234", "123 Elm St", new Date());
-        if (customerService.getCustomerById(1) == null) {
+        if (customerService.getCustomerById(newCustomer.getId()) == null) {
             customerService.addCustomer(newCustomer);
             System.out.println("Customer added successfully.");
         } else {
             System.out.println("Customer with this ID already exists.");
         }
 
-        // Test Retrieve (Read) Customer
-        Customer retrievedCustomer = customerService.getCustomerById(1);
+        // Step 2: Retrieve Customer (Read)
+        Customer retrievedCustomer = customerService.getCustomerById(newCustomer.getId());
         if (retrievedCustomer != null) {
             System.out.println("Retrieved Customer: " + retrievedCustomer.getName() + ", " + retrievedCustomer.getEmail());
         } else {
             System.out.println("Customer not found.");
         }
 
-        // Test Add (Create) Insurance Policy for Customer
-        InsurancePolicy newPolicy = new InsurancePolicy(0, 1, "POL12345", "Auto", 5000.00, new Date(), new Date());
+        // Step 3: Add a New Insurance Policy with Dynamic ID Handling
+        InsurancePolicy newPolicy = new InsurancePolicy(0, newCustomer.getId(), "POL12345", "Auto", 5000.00, new Date(), new Date());
         policyService.addPolicy(newPolicy);
         System.out.println("Policy added successfully.");
 
-        // Test Retrieve (Read) Insurance Policy by ID
-        InsurancePolicy retrievedPolicy = policyService.getPolicyById(1);
+        // Retrieve the newly added policy by policy number
+        InsurancePolicy retrievedPolicy = policyService.getPolicyByPolicyNumber("POL12345");
         if (retrievedPolicy != null) {
-            System.out.println("Retrieved Policy: " + retrievedPolicy.getPolicyNumber() + ", " + retrievedPolicy.getPolicyType() + ", Coverage: " + retrievedPolicy.getCoverageAmount());
+            int policyId = retrievedPolicy.getPolicyId(); // Dynamically get the ID for future actions
+            System.out.println("Retrieved Policy: " + retrievedPolicy.getPolicyNumber() + ", Type: " + retrievedPolicy.getPolicyType());
+
+            // Step 4: Update the Insurance Policy
+            retrievedPolicy.setPolicyType("Home"); // Modify policy type for the update test
+            retrievedPolicy.setCoverageAmount(10000.00);
+            boolean isPolicyUpdated = policyService.updatePolicy(retrievedPolicy);
+            if (isPolicyUpdated) {
+                System.out.println("Policy updated successfully.");
+            } else {
+                System.out.println("Policy update failed.");
+            }
+
+            // Step 5: Verify Policy Update
+            InsurancePolicy verifyUpdatedPolicy = policyService.getPolicyById(policyId);
+            if (verifyUpdatedPolicy != null) {
+                System.out.println("Updated Policy: " + verifyUpdatedPolicy.getPolicyNumber() + ", Type: " + verifyUpdatedPolicy.getPolicyType() + ", Coverage: " + verifyUpdatedPolicy.getCoverageAmount());
+            } else {
+                System.out.println("Policy not found after update.");
+            }
+
+            // Step 6: Delete Insurance Policy
+            boolean isPolicyDeleted = policyService.deletePolicy(policyId);
+            if (isPolicyDeleted) {
+                System.out.println("Policy deleted successfully.");
+            } else {
+                System.out.println("Policy delete failed.");
+            }
+
+            // Step 7: Verify Policy Deletion
+            InsurancePolicy verifyDeletedPolicy = policyService.getPolicyById(policyId);
+            if (verifyDeletedPolicy == null) {
+                System.out.println("Policy deletion verified; policy not found.");
+            }
         } else {
-            System.out.println("Policy not found.");
+            System.out.println("Policy retrieval failed, skipping update and delete tests.");
         }
 
-        // Test Update Insurance Policy
-        InsurancePolicy updatedPolicy = new InsurancePolicy(1, 1, "POL12345", "Home", 10000.00, new Date(), new Date());
-        boolean isPolicyUpdated = policyService.updatePolicy(updatedPolicy);
-        if (isPolicyUpdated) {
-            System.out.println("Policy updated successfully.");
-        } else {
-            System.out.println("Policy update failed.");
-        }
-
-        // Verify Update for Insurance Policy
-        InsurancePolicy verifyUpdatedPolicy = policyService.getPolicyById(1);
-        if (verifyUpdatedPolicy != null) {
-            System.out.println("Updated Policy: " + verifyUpdatedPolicy.getPolicyNumber() + ", " + verifyUpdatedPolicy.getPolicyType() + ", Coverage: " + verifyUpdatedPolicy.getCoverageAmount());
-        }
-
-        // Test Delete Insurance Policy
-        boolean isPolicyDeleted = policyService.deletePolicy(1);
-        if (isPolicyDeleted) {
-            System.out.println("Policy deleted successfully.");
-        } else {
-            System.out.println("Policy delete failed.");
-        }
-
-        // Verify Deletion of Insurance Policy
-        InsurancePolicy verifyDeletedPolicy = policyService.getPolicyById(1);
-        if (verifyDeletedPolicy == null) {
-            System.out.println("Policy deletion verified; policy not found.");
-        }
-
-        // Cleanup - Delete Customer for re-testing
-        boolean isCustomerDeleted = customerService.deleteCustomer(1);
+        // Step 8: Clean Up - Delete Customer for Re-testing
+        boolean isCustomerDeleted = customerService.deleteCustomer(newCustomer.getId());
         if (isCustomerDeleted) {
             System.out.println("Customer deleted successfully.");
+        } else {
+            System.out.println("Customer delete failed.");
+        }
+
+        // Step 9: Verify Customer Deletion
+        Customer verifyDeletedCustomer = customerService.getCustomerById(newCustomer.getId());
+        if (verifyDeletedCustomer == null) {
+            System.out.println("Customer deletion verified; customer not found.");
         }
     }
 }

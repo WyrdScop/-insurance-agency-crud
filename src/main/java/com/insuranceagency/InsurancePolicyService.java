@@ -25,7 +25,7 @@ public class InsurancePolicyService {
         }
     }
 
-    // Read
+    // Read by Policy ID
     public InsurancePolicy getPolicyById(int policyId) {
         String query = "SELECT * FROM insurance_policies WHERE policy_id = ?";
         try (Connection conn = Database.getConnection();
@@ -48,6 +48,34 @@ public class InsurancePolicyService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    // Read by Policy Number (newly added method)
+    public InsurancePolicy getPolicyByPolicyNumber(String policyNumber) {
+        String query = "SELECT * FROM insurance_policies WHERE policy_number = ?";
+        try (Connection conn = Database.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, policyNumber);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return new InsurancePolicy(
+                    rs.getInt("policy_id"),
+                    rs.getInt("customer_id"),
+                    rs.getString("policy_number"),
+                    rs.getString("policy_type"),
+                    rs.getDouble("coverage_amount"),
+                    rs.getDate("start_date"),
+                    rs.getDate("end_date")
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("Error retrieving policy by policy number: " + e.getMessage());
+            e.printStackTrace();
+        }
+        System.err.println("Policy not found with policy number: " + policyNumber);
         return null;
     }
 
