@@ -4,7 +4,7 @@ import main.java.com.insuranceagency.InsurancePolicy;
 import java.sql.*;
 import java.util.logging.Logger;
 import java.util.logging.Level;
-
+import main.java.com.insuranceagency.Database;
 public class InsurancePolicyRepository {
     private static final Logger logger = Logger.getLogger(InsurancePolicyRepository.class.getName());
 
