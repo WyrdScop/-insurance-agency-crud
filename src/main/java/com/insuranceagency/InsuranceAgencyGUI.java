@@ -83,7 +83,50 @@ public class InsuranceAgencyGUI extends JFrame {
         addDialog.setVisible(true);
     }
     private void showViewCustomerDialog() {
-        JOptionPane.showMessageDialog(this, "View Customer Dialog");
+        // Create a dialog for viewing a customer
+        JDialog viewDialog = new JDialog(this, "View Customer", true);
+        viewDialog.setSize(300, 200);
+        viewDialog.setLayout(new GridLayout(3, 1));
+    
+        // Create input field for Customer ID
+        JPanel inputPanel = new JPanel(new GridLayout(1, 2));
+        inputPanel.add(new JLabel("Enter Customer ID:"));
+        JTextField idField = new JTextField();
+        inputPanel.add(idField);
+    
+        // Area to display customer details
+        JTextArea customerInfoArea = new JTextArea();
+        customerInfoArea.setEditable(false);
+    
+        // Add button to retrieve and display customer information
+        JButton viewButton = new JButton("View Customer");
+        viewButton.addActionListener(e -> {
+            try {
+                int id = Integer.parseInt(idField.getText());
+                Customer customer = customerService.getCustomerById(id);
+    
+                if (customer != null) {
+                    customerInfoArea.setText(
+                        "ID: " + customer.getId() + "\n" +
+                        "Name: " + customer.getName() + "\n" +
+                        "Email: " + customer.getEmail() + "\n" +
+                        "Phone: " + customer.getPhoneNumber() + "\n" +
+                        "Address: " + customer.getAddress() + "\n" +
+                        "DOB: " + customer.getDateOfBirth()
+                    );
+                } else {
+                    customerInfoArea.setText("Customer not found.");
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid ID format. Please enter a number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    
+        // Add components to the dialog
+        viewDialog.add(inputPanel);
+        viewDialog.add(viewButton);
+        viewDialog.add(new JScrollPane(customerInfoArea));
+        viewDialog.setVisible(true);
     }
 
     private void showUpdateCustomerDialog() {
