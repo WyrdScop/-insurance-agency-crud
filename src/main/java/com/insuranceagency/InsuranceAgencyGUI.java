@@ -130,7 +130,82 @@ public class InsuranceAgencyGUI extends JFrame {
     }
 
     private void showUpdateCustomerDialog() {
-        JOptionPane.showMessageDialog(this, "Update Customer Dialog");
+        // Create a dialog for updating customer information
+        JDialog updateDialog = new JDialog(this, "Update Customer", true);
+        updateDialog.setSize(400, 300);
+        updateDialog.setLayout(new GridLayout(6, 2));
+    
+        // Input field for Customer ID to fetch details
+        JPanel idPanel = new JPanel(new GridLayout(1, 2));
+        idPanel.add(new JLabel("Enter Customer ID:"));
+        JTextField idField = new JTextField();
+        idPanel.add(idField);
+    
+        // Fields to update customer details
+        JTextField nameField = new JTextField();
+        JTextField emailField = new JTextField();
+        JTextField phoneField = new JTextField();
+        JTextField addressField = new JTextField();
+    
+        JButton fetchButton = new JButton("Fetch Customer");
+        fetchButton.addActionListener(e -> {
+            try {
+                int id = Integer.parseInt(idField.getText());
+                Customer customer = customerService.getCustomerById(id);
+    
+                if (customer != null) {
+                    // Populate fields with existing details
+                    nameField.setText(customer.getName());
+                    emailField.setText(customer.getEmail());
+                    phoneField.setText(customer.getPhoneNumber());
+                    addressField.setText(customer.getAddress());
+                } else {
+                    JOptionPane.showMessageDialog(this, "Customer not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid ID format. Please enter a number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    
+        // Button to save updated information
+        JButton updateButton = new JButton("Update Customer");
+        updateButton.addActionListener(e -> {
+            try {
+                int id = Integer.parseInt(idField.getText());
+                Customer customer = customerService.getCustomerById(id);
+    
+                if (customer != null) {
+                    customer.setName(nameField.getText());
+                    customer.setEmail(emailField.getText());
+                    customer.setPhoneNumber(phoneField.getText());
+                    customer.setAddress(addressField.getText());
+    
+                    if (customerService.updateCustomer(customer)) {
+                        JOptionPane.showMessageDialog(this, "Customer updated successfully.");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Failed to update customer.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid ID format. Please enter a number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    
+        // Adding components to the dialog
+        updateDialog.add(idPanel);
+        updateDialog.add(fetchButton);
+        updateDialog.add(new JLabel("Name:"));
+        updateDialog.add(nameField);
+        updateDialog.add(new JLabel("Email:"));
+        updateDialog.add(emailField);
+        updateDialog.add(new JLabel("Phone:"));
+        updateDialog.add(phoneField);
+        updateDialog.add(new JLabel("Address:"));
+        updateDialog.add(addressField);
+        updateDialog.add(new JLabel(""));  // Filler for alignment
+        updateDialog.add(updateButton);
+    
+        updateDialog.setVisible(true);
     }
 
     private void showDeleteCustomerDialog() {
