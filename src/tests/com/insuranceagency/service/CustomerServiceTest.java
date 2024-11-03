@@ -35,4 +35,22 @@ public class CustomerServiceTest {
         // Assert - Failure Case
         assertNull("Customer should not be found", nonExistentCustomer);
     }
+
+    @Test
+    public void testUpdateCustomer() {
+        // Arrange
+        Customer testCustomer = new Customer(3, "Mark Spencer", "mark@example.com", "555-9876", "789 Maple St", new Date());
+        customerService.addCustomer(testCustomer);
+
+        // Act - Modify customer details
+        testCustomer.setName("Marcus Spencer");
+        testCustomer.setEmail("marcus@example.com");
+        boolean isUpdated = customerService.updateCustomer(testCustomer);
+
+        // Assert
+        assertTrue("Customer should be updated successfully", isUpdated);
+        Customer updatedCustomer = customerService.getCustomerById(3);
+        assertEquals("Customer name should be updated", "Marcus Spencer", updatedCustomer.getName());
+        assertEquals("Customer email should be updated", "marcus@example.com", updatedCustomer.getEmail());
+    }
 }
