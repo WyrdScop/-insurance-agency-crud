@@ -17,19 +17,21 @@ public class CustomerServiceTest {
 
     private final CustomerService customerService = new CustomerService();
 
+    // Clear data before each test
     @Before
     public void setUp() throws Exception {
         try (Connection conn = Database.getConnection();
              Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate("DELETE FROM customers"); // Clear data before each test
+            stmt.executeUpdate("DELETE FROM customers"); // Ensure a fresh start
         }
     }
 
+    // Clear data after each test
     @After
     public void tearDown() throws Exception {
         try (Connection conn = Database.getConnection();
              Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate("DELETE FROM customers"); // Clear data after each test
+            stmt.executeUpdate("DELETE FROM customers"); // Clean up
         }
     }
 
