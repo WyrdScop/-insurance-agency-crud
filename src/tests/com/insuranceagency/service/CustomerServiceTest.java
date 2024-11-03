@@ -1,15 +1,36 @@
 package com.insuranceagency.service;
 
 import main.java.com.insuranceagency.Customer;
+import main.java.com.insuranceagency.Database;
 import main.java.com.insuranceagency.service.CustomerService;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.sql.Connection;
 import java.util.Date;
 
 public class CustomerServiceTest {
 
     private final CustomerService customerService = new CustomerService();
+
+     @Before
+    public void setUp() throws Exception {
+        try (Connection conn = Database.getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate("DELETE FROM customers");
+        }
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        try (Connection conn = Database.getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate("DELETE FROM customers");
+        }
+    }
 
     @Test
     public void testCustomerServiceCreation() {
