@@ -209,7 +209,39 @@ public class InsuranceAgencyGUI extends JFrame {
     }
 
     private void showDeleteCustomerDialog() {
-        JOptionPane.showMessageDialog(this, "Delete Customer Dialog");
+        // Create a dialog for deleting a customer
+        JDialog deleteDialog = new JDialog(this, "Delete Customer", true);
+        deleteDialog.setSize(300, 150);
+        deleteDialog.setLayout(new GridLayout(3, 1));
+    
+        // Field to enter Customer ID
+        JPanel idPanel = new JPanel(new GridLayout(1, 2));
+        idPanel.add(new JLabel("Enter Customer ID:"));
+        JTextField idField = new JTextField();
+        idPanel.add(idField);
+    
+        // Delete button to confirm deletion
+        JButton deleteButton = new JButton("Delete Customer");
+        deleteButton.addActionListener(e -> {
+            try {
+                int id = Integer.parseInt(idField.getText());
+                boolean isDeleted = customerService.deleteCustomer(id);
+    
+                if (isDeleted) {
+                    JOptionPane.showMessageDialog(this, "Customer deleted successfully.");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Customer not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid ID format. Please enter a number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    
+        // Adding components to the dialog
+        deleteDialog.add(idPanel);
+        deleteDialog.add(deleteButton);
+    
+        deleteDialog.setVisible(true);
     }
 
     public static void main(String[] args) {
