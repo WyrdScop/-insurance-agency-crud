@@ -40,12 +40,12 @@ public class CustomerServiceTest {
 
     @Test
     public void testGetCustomerById() {
-        // Arrange
-        Customer testCustomer = new Customer(2, "Jane Doe", "jane@example.com", "555-6789", "456 Oak St", new Date());
+        // Arrange - Use a unique ID for this test
+        Customer testCustomer = new Customer(10, "Jane Doe", "jane@example.com", "555-6789", "456 Oak St", new Date());
         customerService.addCustomer(testCustomer);
 
         // Act - Success Case
-        Customer retrievedCustomer = customerService.getCustomerById(2);
+        Customer retrievedCustomer = customerService.getCustomerById(10);
 
         // Assert - Success Case
         assertNotNull("Customer should be found", retrievedCustomer);
@@ -60,22 +60,22 @@ public class CustomerServiceTest {
 
     @Test
     public void testDeleteCustomer() {
-        // Arrange
-        Customer testCustomer = new Customer(4, "Mark Smith", "mark@example.com", "555-9876", "789 Pine St", new Date());
+        // Arrange - Use a unique ID for this test
+        Customer testCustomer = new Customer(11, "Mark Smith", "mark@example.com", "555-9876", "789 Pine St", new Date());
         customerService.addCustomer(testCustomer);
 
         // Act - Delete Customer
-        boolean isDeleted = customerService.deleteCustomer(4);
+        boolean isDeleted = customerService.deleteCustomer(11);
 
         // Assert
         assertTrue("Customer should be deleted", isDeleted);
-        assertNull("Customer should not exist after deletion", customerService.getCustomerById(4));
+        assertNull("Customer should not exist after deletion", customerService.getCustomerById(11));
     }
 
     @Test
     public void testUpdateCustomer() {
-        // Arrange
-        Customer testCustomer = new Customer(3, "Mike Davis", "mike@example.com", "555-1122", "123 Elm St", new Date());
+        // Arrange - Use a unique ID for this test
+        Customer testCustomer = new Customer(12, "Mike Davis", "mike@example.com", "555-1122", "123 Elm St", new Date());
         customerService.addCustomer(testCustomer);
 
         // Act - Update Customer
@@ -84,7 +84,7 @@ public class CustomerServiceTest {
 
         // Assert - Update Successful
         assertTrue("Customer should be updated", isUpdated);
-        Customer updatedCustomer = customerService.getCustomerById(3);
+        Customer updatedCustomer = customerService.getCustomerById(12);
         assertNotNull("Updated customer should be found", updatedCustomer);
         assertEquals("Updated name should match", "Michael Davis", updatedCustomer.getName());
     }
