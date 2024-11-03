@@ -34,9 +34,54 @@ public class InsuranceAgencyGUI extends JFrame {
 
     // Define dialogs for CRUD operations (initially placeholders)
     private void showAddCustomerDialog() {
-        JOptionPane.showMessageDialog(this, "Add Customer Dialog");
+        // Create dialog for adding a customer
+        JDialog addDialog = new JDialog(this, "Add Customer", true);
+        addDialog.setSize(300, 300);
+        addDialog.setLayout(new GridLayout(6, 2));
+    
+        // Create input fields
+        JTextField idField = new JTextField();
+        JTextField nameField = new JTextField();
+        JTextField emailField = new JTextField();
+        JTextField phoneField = new JTextField();
+        JTextField addressField = new JTextField();
+    
+        // Add labels and fields to the dialog
+        addDialog.add(new JLabel("ID:"));
+        addDialog.add(idField);
+        addDialog.add(new JLabel("Name:"));
+        addDialog.add(nameField);
+        addDialog.add(new JLabel("Email:"));
+        addDialog.add(emailField);
+        addDialog.add(new JLabel("Phone:"));
+        addDialog.add(phoneField);
+        addDialog.add(new JLabel("Address:"));
+        addDialog.add(addressField);
+    
+        // Add 'Add Customer' button
+        JButton submitButton = new JButton("Add Customer");
+        submitButton.addActionListener(e -> {
+            try {
+                // Retrieve user inputs
+                int id = Integer.parseInt(idField.getText());
+                String name = nameField.getText();
+                String email = emailField.getText();
+                String phone = phoneField.getText();
+                String address = addressField.getText();
+    
+                // Create new Customer and add it to the service
+                customerService.addCustomer(new Customer(id, name, email, phone, address, new Date())); // Assuming Date() as placeholder for DOB
+                JOptionPane.showMessageDialog(this, "Customer added successfully!");
+                addDialog.dispose();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid ID format. Please enter a number.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    
+        // Add the submit button to the dialog
+        addDialog.add(submitButton);
+        addDialog.setVisible(true);
     }
-
     private void showViewCustomerDialog() {
         JOptionPane.showMessageDialog(this, "View Customer Dialog");
     }
