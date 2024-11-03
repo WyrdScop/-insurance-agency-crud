@@ -74,4 +74,17 @@ public class CustomerServiceTest {
         assertEquals("Customer name should be updated", "Marcus Spencer", updatedCustomer.getName());
         assertEquals("Customer email should be updated", "marcus@example.com", updatedCustomer.getEmail());
     }
+    @Test
+    public void testDeleteCustomer() {
+        // Arrange
+        Customer testCustomer = new Customer(4, "Mark Smith", "mark@example.com", "555-9876", "789 Pine St", new Date());
+        customerService.addCustomer(testCustomer);
+
+        // Act - Delete Customer
+        boolean isDeleted = customerService.deleteCustomer(4);
+
+        // Assert
+        assertTrue("Customer should be deleted", isDeleted);
+        assertNull("Customer should not exist after deletion", customerService.getCustomerById(4));
+    }
 }
