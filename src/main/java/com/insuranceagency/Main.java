@@ -1,9 +1,8 @@
 package main.java.com.insuranceagency;
 
+import java.util.logging.Logger;
 import main.java.com.insuranceagency.service.CustomerService;
 import main.java.com.insuranceagency.service.InsurancePolicyService;
-
-import java.util.logging.Logger;
 
 public class Main {
     private static final Logger logger = Logger.getLogger(Main.class.getName());

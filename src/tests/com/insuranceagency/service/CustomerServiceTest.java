@@ -126,4 +126,8 @@ public class CustomerServiceTest {
         assertNotNull("Updated customer should be found", updatedCustomer);
         assertEquals("Updated name should match", "Michael Davis", updatedCustomer.getName());
     }
+
+    public CustomerService getCustomerService() {
+        return customerService;
+    }
 }
