@@ -1,0 +1,17 @@
+# Ignore sensitive configuration file
+src/main/resources/db.properties
+
+# Ignore compiled .class files
+out/
+
+# Ignore operating system files
+.DS_Store
+
+# Ignore IDE or editor files
+.idea/
+*.iml
+*.log
+
+# Ignore temporary files
+*.tmp
+*.bak
