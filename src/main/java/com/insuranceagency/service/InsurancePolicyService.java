@@ -14,32 +14,32 @@ public class InsurancePolicyService {
 
     // Add Policy
     public void addPolicy(InsurancePolicy policy) {
-        logger.info("Attempting to add policy with Policy Number: " + policy.getPolicyNumber());
+        logger.info(String.format("Attempting to add policy with Policy Number: %s", policy.getPolicyNumber()));
         policyRepository.addPolicy(policy);
         logger.info("Policy added successfully.");
     }
 
     // Get Policy by ID
     public InsurancePolicy getPolicyById(int policyId) {
-        logger.info("Retrieving policy with ID: " + policyId);
+        logger.info(String.format("Retrieving policy with ID: %d", policyId));
         return policyRepository.getPolicyById(policyId);
     }
 
     // Get Policy by Policy Number
     public InsurancePolicy getPolicyByPolicyNumber(String policyNumber) {
-        logger.info("Retrieving policy with Policy Number: " + policyNumber);
+        logger.info(String.format("Retrieving policy with Policy Number: %s", policyNumber));
         return policyRepository.getPolicyByPolicyNumber(policyNumber);
     }
 
     // Update Policy
     public boolean updatePolicy(InsurancePolicy policy) {
-        logger.info("Updating policy with ID: " + policy.getPolicyId());
+        logger.info(String.format("Updating policy with ID: %d", policy.getPolicyId()));
         return policyRepository.updatePolicy(policy);
     }
 
     // Delete Policy
     public boolean deletePolicy(int policyId) {
-        logger.info("Deleting policy with ID: " + policyId);
+        logger.info(String.format("Deleting policy with ID: %d", policyId));
         return policyRepository.deletePolicy(policyId);
     }
 }
