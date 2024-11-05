@@ -8,6 +8,8 @@ public class Main {
     private static final Logger logger = Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
+        logger.info("Application started");
+
         CustomerService customerService = new CustomerService();
         InsurancePolicyService policyService = new InsurancePolicyService();
 
