@@ -1,10 +1,10 @@
 package main.java.com.insuranceagency.repository;
 
-import main.java.com.insuranceagency.InsurancePolicy;
 import java.sql.*;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import main.java.com.insuranceagency.Database;
+import main.java.com.insuranceagency.InsurancePolicy;
 public class InsurancePolicyRepository {
     private static final Logger logger = Logger.getLogger(InsurancePolicyRepository.class.getName());
 
@@ -19,7 +19,7 @@ public class InsurancePolicyRepository {
             pstmt.setDate(5, new java.sql.Date(policy.getStartDate().getTime()));
             pstmt.setDate(6, new java.sql.Date(policy.getEndDate().getTime()));
             pstmt.executeUpdate();
-            logger.info("Policy added to database: " + policy.getPolicyNumber());
+            logger.log(Level.INFO, "Policy added to database: {0}", policy.getPolicyNumber());
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error adding policy: " + e.getMessage(), e);
         }
@@ -46,7 +46,7 @@ public class InsurancePolicyRepository {
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error retrieving policy by ID: " + policyId, e);
         }
-        logger.warning("Policy not found with ID: " + policyId);
+        logger.log(Level.WARNING, "Policy not found with ID: {0}", policyId);
         return null;
     }
 
@@ -71,7 +71,7 @@ public class InsurancePolicyRepository {
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error retrieving policy by policy number: " + policyNumber, e);
         }
-        logger.warning("Policy not found with policy number: " + policyNumber);
+        logger.log(Level.WARNING, "Policy not found with policy number: {0}", policyNumber);
         return null;
     }
 
