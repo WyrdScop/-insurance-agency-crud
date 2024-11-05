@@ -1,5 +1,6 @@
 package main.java.com.insuranceagency.service;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.java.com.insuranceagency.Customer;
 import main.java.com.insuranceagency.repository.CustomerRepository;
@@ -37,7 +38,7 @@ public class CustomerService {
     }
 
     public Customer getCustomerById(int id) {
-        logger.info("Retrieving customer with ID: " + id);
+        logger.log(Level.INFO, "Retrieving customer with ID: {0}", id);
         return customerRepository.getCustomerById(id); // Call repository for database retrieval
     }
 
@@ -55,7 +56,7 @@ public class CustomerService {
     }
 
     public boolean deleteCustomer(int id) {
-        logger.info("Deleting customer with ID: " + id);
+        logger.log(Level.INFO, "Deleting customer with ID: {0}", id);
         boolean isDeleted = customerRepository.deleteCustomer(id); // Call repository for deletion
         if (isDeleted) {
             logger.info("Customer deleted successfully.");
