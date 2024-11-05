@@ -10,16 +10,13 @@ import main.java.com.insuranceagency.service.InsurancePolicyService;
 
 public class ConsoleUI {
     private final CustomerService customerService;
-    private final InsurancePolicyService policyService;
     private final Scanner scanner = new Scanner(System.in);
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     // New constructor to inject services
     public ConsoleUI(CustomerService customerService, InsurancePolicyService policyService) {
         this.customerService = customerService;
-        this.policyService = policyService;
     }
-
     public void start() {
         while (true) {
             try {
