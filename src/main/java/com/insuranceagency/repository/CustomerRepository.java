@@ -1,10 +1,11 @@
 package main.java.com.insuranceagency.repository;
 
+import java.sql.*;
+import java.text.MessageFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import main.java.com.insuranceagency.Customer;
 import main.java.com.insuranceagency.Database;
-import java.sql.*;
-import java.util.logging.Logger;
-import java.util.logging.Level;
 
 public class CustomerRepository {
     private static final Logger logger = Logger.getLogger(CustomerRepository.class.getName());
@@ -47,7 +48,7 @@ public class CustomerRepository {
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error retrieving customer in repository: " + e.getMessage(), e);
         }
-        logger.warning("Customer not found with ID: " + id);
+        logger.warning(MessageFormat.format("Customer not found with ID: {0}", id));
         return null;
     }
 
@@ -67,7 +68,7 @@ public class CustomerRepository {
                 logger.info("Customer updated successfully in repository.");
                 return true;
             } else {
-                logger.warning("No customer found with ID: " + customer.getId());
+                logger.warning(MessageFormat.format("No customer found with ID: {0}", customer.getId()));
             }
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error updating customer in repository: " + e.getMessage(), e);
@@ -85,7 +86,7 @@ public class CustomerRepository {
                 logger.info("Customer deleted successfully in repository.");
                 return true;
             } else {
-                logger.warning("No customer found with ID: " + id);
+                logger.warning(MessageFormat.format("No customer found with ID: {0}", id));
             }
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error deleting customer in repository: " + e.getMessage(), e);
